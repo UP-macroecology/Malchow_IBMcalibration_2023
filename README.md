@@ -1,11 +1,11 @@
-# Fitting individual-based models of species range dynamics to long-term monitoring data
+# Fitting individual-based models of spatial population dynamics to long-term monitoring data
 
 
 This is supplementary material to the publication  
 
 *"Fitting individual-based models of species range dynamics to long-term monitoring data"*
 
-by Anne-Kathleen Malchow, Guillermo Fandos, Urs G. Kormann, Martin Grüebler, Marc Kéry, Florian Hartig, Damaris Zurell.  
+by Anne-Kathleen Malchow, Guillermo Fandos, Urs G. Kormann, Martin U. Grüebler, Marc Kéry, Florian Hartig, Damaris Zurell.  
 
 It contains the R scripts and data needed to reproduce all results. The code uses a developmental version of the R package *RangeShiftR*, which omits all file inputs and outpus. It can be found in the RangeShiftR repo under the development tag [v.1.1-beta.0](https://github.com/RangeShifter/RangeShiftR-package/releases/tag/v.1.1-beta.0).  
 
@@ -31,25 +31,25 @@ Knaus, P., Strebel, N., & Sattler, T. (2022). The State of Birds in Switzerland 
 
 ## Folder *data*
 
-All input data required to run the model calibration: ASCII rasters of habitat maps, the initial distribution model, and spatially aggregated counts from the Swiss breeding bird survey.
+All input data required to run the model calibration: ASCII rasters of habitat maps, the initial distribution model, and spatially aggregated counts from the Swiss breeding bird survey, and the spatial blocking of the gridded landscape.
 
 ## Folder *scripts*
 
-#### *scripts/data_prep*
-
-All scripts to generate the input data from the original data sources, i.e. CORINE land cover data and Swiss breeding bird atlas data (both not included).
-
 #### *scripts/calibration*
 
-The scripts to run the model calibration. The routine is contained in *RangeShiftR_calibration.R*, which loads functions defined in the other scripts.
+The scripts to run the model calibration. The calibration routine is contained in *RangeShiftR_calibration.R*, which loads functions defined in the other scripts.
 
 #### *scripts/analysis*
 
-The scripts to process and analyse the MCMC chains produced in the calibration. Extracts the demography-climate relationships and performs prior/posterior predicitons. Creates all plots. All routines are contained in "analysis_main.R*, which loads functions defined in the other scripts.
+The scripts to process and analyse the MCMC chains produced in the calibration. Reads and combines the independent MCMCs for each fold; plots diagnostics, marginal distributions, and correlations; performs the spatial-block cross-validation and produces prior/posterior predicitons. Creates all plots. All routines are contained in "analysis_main.R*, which loads functions defined in the other scripts.
 
 ## Folder *model*
 
 Contains the RangeShiftR folder structure.
+
+## Folder *results*
+
+Contains the simulation results for validation and prediction as well as the sub-folders to store further results.
 
 
 ---
