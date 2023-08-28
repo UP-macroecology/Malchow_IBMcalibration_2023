@@ -49,7 +49,8 @@ initialiseRSsim <- function() {
 													 							   0,   0,   0,   0,
 													 							   0,   0,   0,   0,
 													 							   0,   0, 1.0, 1.0),
-													 						    nrow = 4, byrow = T)
+													 						    nrow = 4, byrow = T),
+													 PostDestructn = TRUE
 						)
 	)
 	

@@ -24,7 +24,6 @@ readandpreparedata <- function() {
 	
 	#--- 2.) read habitat map(s):
 	
-
 	habitat_names <- paste0("data/habitatmaps/RK_hsi_2km_",sprintf("%02d",1998+1:nrYrSDM),".asc")
 	habitatmap <- raster(habitat_names[20])
 	habitat_matrices <- lapply(habitat_names, 
@@ -40,10 +39,27 @@ readandpreparedata <- function() {
 
 	#--- 3.) read observed data set:
 
-	load(file = "data/abund/mhb_counts.Rdata", envir = .GlobalEnv)
+	# load spatially and temporally aggregated MBB data
+	MHBabunds <- readRDS("data/abund/mhb_counts.rds")
 	
-	#sample_cells_habitat <- rowSums(MHBabunds[-1],na.rm = TRUE)>0 | values(habitatmap)[sample_cells_abd]>0
+	# load lookup table that links cell ID to block ID to fold ID
+	lookup <<- readRDS(paste0("data/spatial_blocking/spatial_blocks_lookup_",aggr_blocks,".rds"))
+	
+	# retain only those cells that are also in MHB set...
+	lookup <- lookup[lookup$mhb_cell,]
+	
+	# ... and not in current fold
+	lookup <- lookup[lookup$foldID != spatial_fold,]
+	
+	# filter for blocks not in current fold
+	MHBabunds <<- MHBabunds[MHBabunds$blockID %in% lookup$blockID,]
+	
+	# get rid of foldID column
+	lookup <<- lookup[c("blockID","cells")]
+	
+	# store some year indices
 	sample_years_abd <<- (0:(nrYrMHB-1))   # sampled years to be compared with simulation
 	simul_years <<- seq(from = OutStartPop-nrYrBurnin, by = OutIntPop, to = Years-nrYrBurnin-1)   # simulated years
 	ix_years_abd <<- which(simul_years %in% sample_years_abd)   # indices of sampled years within vector of simulated years
+	
 }

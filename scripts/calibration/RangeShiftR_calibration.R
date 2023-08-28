@@ -34,13 +34,13 @@ source("scripts/calibration/calculateFolds.R")
 ###-- 1.) Set simulation & calibration parameters -----------------------------------------------------------
 {
 #--- calibration parameters:
-set_calib <- list(likdist = "GamPois", sampler = "DEzs", iter = 900, parallel = 3, InfVal = -1e6) # "Pois","GamPois","Gaus","TrGaus","LogNorm","Skell"
+set_calib <- list(likdist = "GamPois", sampler = "DEzs", iter = 3e5, parallel = 3, InfVal = -1e6) # "Pois","GamPois","Gaus","TrGaus","LogNorm","Skell"
 # set switches to choose which analyses to run
 switch_analyses <- c("SA_oat" = FALSE, "SA_morris" = FALSE, "SA_bt" = FALSE,
                      "CA_mcmc" = TRUE, "CA_opt" = FALSE)
 
 #---- spatial fold nr
-spatial_fold <- 1
+spatial_fold <- 2
 
 #---- data type:
 simulatedData <- FALSE
@@ -64,7 +64,7 @@ par_SettSlop <- -1.0
 {# set parameter ranges & reference params
   CA_params  <- data.frame(name = c( "DensDep","Fecund", "Surv1", "Surv2", "Surv3", "Deve1", "Deve2", "EmigProb","DispDist","SettBeta","SettProb","InitPop","sigma","GPsize"),
                            min  = c(   0.1e-2 ,   0.50 ,   0.01 ,   0.01 ,   0.01 ,   0.01 ,   0.01 ,      0.01 ,      400 ,     -15  ,     0.01 ,     200 ,  0.01,    1.00 ),
-                           def  = c(   0.6e-2 ,   1.65 ,   0.42 ,   0.68 ,   0.80 ,   0.80 ,   0.55 ,      0.64 ,     2000 ,       4  ,     0.85 ,    1500 ,  0.20,   50.00 ),
+                           def  = c(   0.6e-2 ,   1.65 ,   0.42 ,   0.68 ,   0.80 ,   0.80 ,   0.55 ,      0.64 ,     2200 ,       4  ,     0.85 ,    1500 ,  0.20,   50.00 ),
                            max  = c(   2.0e-2 ,   5.00 ,   0.99 ,   0.99 ,   0.99 ,   0.99 ,   0.99 ,      0.99 ,     2400 ,      15  ,     0.99 ,    2500 ,  0.90,  500.00 ))
   
 # select parameters for calibration
@@ -216,6 +216,8 @@ if(switch_analyses["CA_mcmc"]){
   
   # produce output
   summary(MCMCout)
+  getVolume(MCMCout, prior = T)
+  
   save.image(paste0("results/CA_out/CA_",set_calib$sampler,"_",calib_name_core,"_it",set_calib$iter,"_",batchnr,".RData"))
   
   pdf(file = paste0("results/CA_out/CA_",set_calib$sampler,"_",calib_name_core,"_it",set_calib$iter,"_",batchnr,".pdf"), width = 12, height = 10)
