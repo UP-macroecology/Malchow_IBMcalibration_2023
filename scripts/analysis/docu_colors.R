@@ -7,7 +7,7 @@
 library(tikzDevice)
 
 # path for storing tikz figures
-path_doc <- "doc/tex/figures/"
+path_doc <- "results/figures/"
 
 
 ###-----------------------------------------------------------------
