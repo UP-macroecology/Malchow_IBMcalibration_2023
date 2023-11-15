@@ -1,14 +1,17 @@
 # Fitting individual-based models of spatial population dynamics to long-term monitoring data
 
 
-This is supplementary material to the publication  
+This is supplementary material to the publication: 
 
-*"Fitting individual-based models of species range dynamics to long-term monitoring data"*
+*"Fitting individual-based models of spatial population dynamics to long-term monitoring data"*
 
 by Anne-Kathleen Malchow, Guillermo Fandos, Urs G. Kormann, Martin U. Grüebler, Marc Kéry, Florian Hartig, Damaris Zurell.  
 
-It contains the R scripts and data needed to reproduce all results. The code uses a developmental version of the R package *RangeShiftR*, which omits all file inputs and outpus. It can be found in the RangeShiftR repo under the development tag [v.1.1-beta.0](https://github.com/RangeShifter/RangeShiftR-package/releases/tag/v.1.1-beta.0).  
+It contains the R scripts and data needed to reproduce all results. The code uses a developmental version of the R package *RangeShiftR*, which can be found in the RangeShiftR repository under the development tag [v.1.1-beta.1](https://github.com/RangeShifter/RangeShiftR-package/releases/tag/v.1.1-beta.1).
 
+This development version implements extended functionality of the interface to replace all file in- and outputs. Inputs such as habitat maps can now be given as matrices in R and the output abundance maps are (optionally) returned as raster objects. 
+(Note: the output type that is stored in these return rasters is currently hard-coded and is here set to the number of adult individuals in each cell. Adults are all stages with strictly positive fecundity.) 
+Avoiding the file connection saves runtime and facilitates thread safety as needed for parallel code execution.
 
 **Funding**
 
@@ -31,25 +34,30 @@ Knaus, P., Strebel, N., & Sattler, T. (2022). The State of Birds in Switzerland 
 
 ## Folder *data*
 
-All input data required to run the model calibration: ASCII rasters of habitat maps, the initial distribution model, and spatially aggregated counts from the Swiss breeding bird survey, and the spatial blocking of the gridded landscape.
+All input data required to run the RangeShiftR model and the calibration: 
+- **habitatmaps**: ASCII rasters of yearly habitat maps (for the standard scenario as well as for the two sensitivity scenarios, labelled "plus"and "mnus")
+- **init**: the initial distribution model
+- **abund**: spatially aggregated counts from the Swiss breeding bird survey
+- **spatial_blocking**: the spatial blocks of the gridded landscape over which to aggregate the counts / number of individuals for comparison in the calibration
+- **hillshade**: Switzerland hillshading for plotting
 
 ## Folder *scripts*
 
 #### *scripts/calibration*
 
-The scripts to run the model calibration. The calibration routine is contained in *RangeShiftR_calibration.R*, which loads functions defined in the other scripts.
+The scripts to run the model calibration. The procedural calibration routine is contained in *RangeShiftR_calibration.R*, which loads functions defined in the other scripts.
 
 #### *scripts/analysis*
 
-The scripts to process and analyse the MCMC chains produced in the calibration. Reads and combines the independent MCMCs for each fold; plots diagnostics, marginal distributions, and correlations; performs the spatial-block cross-validation and produces prior/posterior predicitons. Creates all plots. All routines are contained in "analysis_main.R*, which loads functions defined in the other scripts.
+The scripts to process and analyse the MCMC chains produced in the calibration. Reads and combines the independent MCMCs for each fold; plots diagnostics, marginal distributions, and correlations; performs the spatial-block cross-validation and produces prior/posterior predictions. Creates all plots. All routines are contained in "analysis_main.R*, which loads functions defined in the other scripts.
 
 ## Folder *model*
 
-Contains the RangeShiftR folder structure.
+Contains the RangeShifter folder structure that is required by RangeShifter even though no file in- or output takes place.
 
 ## Folder *results*
 
-Contains the simulation results for validation and prediction as well as the sub-folders to store further results.
+Contains the folders to store all calibration and analysis results. Intermediate results of prediction and validation are provided in the sub-folder *predict*.
 
 
 ---
